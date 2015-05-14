@@ -48,7 +48,7 @@ class kibana::install (
     require => Exec['extract_kibana'],
   }
 
-  case $service_mode: {
+  case $service_mode {
     'init': {
       file { '/etc/init.d/kibana':
         ensure  => 'file',
@@ -60,7 +60,6 @@ class kibana::install (
       file { '/etc/init/kibana':
         ensure  => 'file',
         content => template('kibana/kibana.upstart.service.erb'),
-        mode    => 0755,
       }
     }
     default: {
