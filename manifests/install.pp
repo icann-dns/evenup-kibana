@@ -12,7 +12,7 @@ class kibana::install (
   $base_url            = $::kibana::base_url,
   $tmp_dir             = $::kibana::tmp_dir,
   $install_path        = $::kibana::install_path,
-  $legacy_service_mode = $::kibana::legacy_service_mode,
+  $service_mode        = $::kibana::service_mode,
 ) {
 
   $filename = "kibana-${version}-linux-x64"
@@ -48,16 +48,26 @@ class kibana::install (
     require => Exec['extract_kibana'],
   }
 
-  if $legacy_service_mode {
-    file { '/etc/init.d/kibana':
-      ensure  => 'file',
-      content => template('kibana/kibana.legacy.service.erb'),
-      mode    => 0755,
+  case $service_mode: {
+    'init': {
+      file { '/etc/init.d/kibana':
+        ensure  => 'file',
+        content => template('kibana/kibana.legacy.service.erb'),
+        mode    => 0755,
+      }
     }
-  } else {
-    file { '/usr/lib/systemd/system/kibana.service':
-      ensure  => 'file',
-      content => template('kibana/kibana.service.erb'),
+    'upstart': {
+      file { '/etc/init/kibana':
+        ensure  => 'file',
+        content => template('kibana/kibana.upstart.service.erb'),
+        mode    => 0755,
+      }
+    }
+    default: {
+      file { '/usr/lib/systemd/system/kibana.service':
+        ensure  => 'file',
+        content => template('kibana/kibana.service.erb'),
+      }
     }
   }
 

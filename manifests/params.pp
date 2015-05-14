@@ -21,6 +21,6 @@ class kibana::params {
   $default_app_id      = 'discover'
   $request_timeout     = 300000
   $shard_timeout       = 0
-  $legacy_service_mode = false
+  $service_mode        = 'systemd'
 
 }

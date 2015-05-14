@@ -1,0 +1,5 @@
+description 'Kibana service'
+
+start on static-network-up
+
+exec <%= @install_path %>/kibana/bin/kibana
