@@ -7,11 +7,13 @@
 #
 # * Justin Lambert <mailto:jlambert@letsevenup.com>
 #
-class kibana::service {
-
+class kibana::service (
+  $service_provider = $::kibana::service_provider 
+) {
   service { 'kibana':
-    ensure => running,
-    enable => true,
+    ensure   => running,
+    enable   => true,
+    provider => $service_provider,
   }
 
 }
