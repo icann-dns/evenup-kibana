@@ -48,7 +48,7 @@
 #   String.  Time in milliseconds for Elasticsearch to wait for responses from shards.
 #   Default: 0
 #
-# [*service_mode*]
+# [*service_provider*]
 #   String. Either init, systemd or upstart
 #   Default: systemd
 #
@@ -75,7 +75,7 @@ class kibana (
   $default_app_id      = $::kibana::params::default_app_id,
   $request_timeout     = $::kibana::params::request_timeout,
   $shard_timeout       = $::kibana::params::shard_timeout,
-  $service_mode        = $::kibana::params::service_mode,
+  $service_provider        = $::kibana::params::service_provider,
 ) inherits kibana::params {
 
   if !is_integer($port) {
@@ -90,7 +90,7 @@ class kibana (
   validate_absolute_path($install_path)
   validate_absolute_path($tmp_dir)
   validate_bool($es_preserve_host)
-  validate_re('^(init|systemd|upstart)$', $service_mode)
+  validate_re('^(init|systemd|upstart)$', $service_provider)
   
   class { '::kibana::install': } ->
   class { '::kibana::config': } ~>
