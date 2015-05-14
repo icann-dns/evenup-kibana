@@ -57,7 +57,7 @@ class kibana::install (
       }
     }
     'upstart': {
-      file { '/etc/init/kibana':
+      file { '/etc/init/kibana.conf':
         ensure  => 'file',
         content => template('kibana/kibana.upstart.service.erb'),
       }
